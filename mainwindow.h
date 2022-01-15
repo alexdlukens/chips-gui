@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <map>
 #include <QSettings>
+#include <cstdlib>
+#include <QProcess>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -20,9 +23,11 @@ public slots:
     void onSettingsButtonPressed();
     void onMCSButtonPressed();
     void onBSPButtonPressed();
+    void readyReadStandardOutput();
+    void readyReadStandardError();
 
 private:
     Ui::MainWindow *ui;
-
+    QProcess *bspProcess;
 };
 #endif // MAINWINDOW_H
