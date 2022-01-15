@@ -23,11 +23,13 @@ public slots:
     virtual void onChipFpgaButtonClicked();
     virtual void onFreedomSdkButtonClicked();
     virtual void onExitButtonClicked();
+    virtual void onRISCVPathButtonClicked();
 
 private:
     Ui::SettingsDialog *ui;
     QSettings *mainSettings;
     std::map<QString, QString> editedSettings;
+
 };
 
 #endif // SETTINGSDIALOG_H

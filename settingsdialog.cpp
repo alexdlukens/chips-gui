@@ -17,16 +17,20 @@ SettingsDialog::SettingsDialog(QSettings &settingsMap, QWidget *parent) :
     if(this->mainSettings->contains("chip_fpga")){
         ui->chipyardFpgaPath->setText(this->mainSettings->value("chip_fpga").toString());
     }
+    if(this->mainSettings->contains("RISCV")){
+        ui->riscvPath->setText(this->mainSettings->value("RISCV").toString());
+    }
 
     connect(ui->chipyardFpgaButton, SIGNAL(clicked(bool)), this, SLOT(onChipFpgaButtonClicked()));
     connect(ui->freedomSdkButton, SIGNAL(clicked(bool)), this, SLOT(onFreedomSdkButtonClicked()));
+    connect(ui->riscvButton, SIGNAL(clicked(bool)), this, SLOT(onRISCVPathButtonClicked()));
     connect(ui->ExitButtons, SIGNAL(accepted()), this, SLOT(onExitButtonClicked()));
 }
 
 void SettingsDialog::onChipFpgaButtonClicked()
 {
     //when button clicked, get path to chipyard fpga directory;
-    QString dirPath = QFileDialog::getExistingDirectory(this, "Chipyard/FPGA Dir", "$pwd");
+    QString dirPath = QFileDialog::getExistingDirectory(this, "Chipyard/FPGA Dir", "");
     if(!dirPath.isEmpty()){
         ui->chipyardFpgaPath->setText(dirPath);
         this->editedSettings["chip_fpga"] = dirPath;
@@ -35,13 +39,22 @@ void SettingsDialog::onChipFpgaButtonClicked()
 }
 void SettingsDialog::onFreedomSdkButtonClicked()
 {
-    QString dirPath = QFileDialog::getExistingDirectory(this, "Freedom-E-SDK Dir", "$pwd");
+    QString dirPath = QFileDialog::getExistingDirectory(this, "Freedom-E-SDK Dir", "");
     if(!dirPath.isEmpty()){
         ui->freedomSdkPath->setText(dirPath);
         this->editedSettings["freedom_sdk_path"] = dirPath;
     }
 }
 
+void SettingsDialog::onRISCVPathButtonClicked()
+{
+    QString dirPath = QFileDialog::getExistingDirectory(this, "RISC-V GCC Path", "");
+    if(!dirPath.isEmpty()){
+        ui->riscvPath->setText(dirPath);
+        this->editedSettings["RISCV"] = dirPath;
+        setenv("RISCV",dirPath.toStdString().c_str(), 1);
+    }
+}
 
 SettingsDialog::~SettingsDialog()
 {
