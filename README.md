@@ -2,7 +2,7 @@
 GUI interface for FPGA endeavours via Chipyard, Freedom-E-SDK, and associated commands
 
 ## So Far
-- Settings are persistant
+- Settings are persistent
 - Chipyard/fpga path & freedom-e-sdk paths shown in settings
 - terminal output shown in textOutput QWidget
 
