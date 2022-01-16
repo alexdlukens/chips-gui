@@ -30,6 +30,6 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    QProcess *bspProcess;
+    QProcess *chipyardProcess;
 };
 #endif // MAINWINDOW_H
