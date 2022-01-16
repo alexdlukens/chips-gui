@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionSettings, SIGNAL(triggered(bool)), this, SLOT(onSettingsButtonPressed()));
 
     this->chipyardProcess = new QProcess(this);
+//    chipyardProcess->start("bash environmentInit.sh");
     connect(chipyardProcess, SIGNAL(readyReadStandardOutput()),this, SLOT(readyReadStandardOutputBSP()));
     connect(chipyardProcess, SIGNAL(readyReadStandardError()),this, SLOT(readyReadStandardErrorBSP()));
     connect(chipyardProcess, SIGNAL(stateChanged(QProcess::ProcessState)), this, SLOT(setChipyardButtonsEnabled(QProcess::ProcessState)));
@@ -66,15 +67,16 @@ void MainWindow::onMCSButtonPressed()
         std::cout << "chipyard/fpga dir not set in settings" << std::endl;
         return;
     }
-    QStringList env = {ui->commandDir->text(), "RISCV=" + settingsMap.value("RISCV").toString()};
+    QStringList env = {"RISCV=" + settingsMap.value("RISCV").toString(), "QT_FPGA_PATH=" + settingsMap.value("chip_fpga").toString(), "QT_CMD=mcs", "QT_OP=" + ui->commandDir->text(), "HOME=" + QProcessEnvironment::systemEnvironment().value("HOME")};
     chipyardProcess->setEnvironment(env);
 
 
-    QString command = QString::fromStdString("make");
+    QString command = QString::fromStdString("/bin/bash");
 
     //in this case our only argument is to specify that we want to build "bsp"
     QStringList arguments;
-    arguments.append("mcs");
+    arguments.append("-c");
+    arguments.append("environmentInit.sh");
 
     this->chipyardProcess->setWorkingDirectory(settingsMap.value("chip_fpga").toString());
     std::cout << "before starting chipyard MCS Process" << std::endl;
@@ -92,17 +94,18 @@ void MainWindow::onBSPButtonPressed()
         std::cout << "chipyard/fpga dir not set in settings" << std::endl;
         return;
     }
-    QStringList env = {ui->commandDir->text(), "RISCV=" + settingsMap.value("RISCV").toString()};
+    QStringList env = {"RISCV=" + settingsMap.value("RISCV").toString(), "QT_FPGA_PATH=" + settingsMap.value("chip_fpga").toString(), "QT_CMD=bsp", "QT_OP=" + ui->commandDir->text(), "HOME=" + QProcessEnvironment::systemEnvironment().value("HOME")};
     chipyardProcess->setEnvironment(env);
 
 
-    QString command = QString::fromStdString("make");
+    QString command = QString::fromStdString("/bin/bash");
 
     //in this case our only argument is to specify that we want to build "bsp"
     QStringList arguments;
-    arguments.append("bsp");
+    arguments.append("-c");
+    arguments.append("environmentInit.sh");
 
-    this->chipyardProcess->setWorkingDirectory(settingsMap.value("chip_fpga").toString());
+//    this->chipyardProcess->setWorkingDirectory(settingsMap.value("chip_fpga").toString());
     std::cout << "before starting chipyard BSP Process" << std::endl;
     this->chipyardProcess->start(command, arguments);
     std::cout << "started BSP" << std::endl;
@@ -115,10 +118,12 @@ void MainWindow::setChipyardButtonsEnabled(QProcess::ProcessState newState)
     {
         ui->MakeBSP->setEnabled(false);
         ui->MakeMCS->setEnabled(false);
+        ui->AbortOperation->setEnabled(true);
     }
     else if(newState == QProcess::NotRunning){
         ui->MakeBSP->setEnabled(true);
         ui->MakeMCS->setEnabled(true);
+        ui->AbortOperation->setEnabled(false);
     }
 }
 
@@ -133,3 +138,10 @@ void MainWindow::readyReadStandardErrorBSP()
     std::cout << "APPENDING ERROR OUTPUT" << std::endl;
     ui->textBrowser->append(this->chipyardProcess->readAllStandardError());
 }
+
+void MainWindow::on_AbortOperation_clicked()
+{
+    chipyardProcess->kill();
+    std::cout << "chipyard Process Killed" << std::endl;
+}
+

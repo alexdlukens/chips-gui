@@ -28,6 +28,9 @@ public slots:
     void setChipyardButtonsEnabled(QProcess::ProcessState newState);
 
 
+private slots:
+    void on_AbortOperation_clicked();
+
 private:
     Ui::MainWindow *ui;
     QProcess *chipyardProcess;
