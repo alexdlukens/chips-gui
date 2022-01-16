@@ -23,8 +23,8 @@ public slots:
     void onSettingsButtonPressed();
     void onMCSButtonPressed();
     void onBSPButtonPressed();
-    void readyReadStandardOutput();
-    void readyReadStandardError();
+    void readyReadStandardOutputBSP();
+    void readyReadStandardErrorBSP();
 
 private:
     Ui::MainWindow *ui;

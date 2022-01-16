@@ -1,9 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include "systemcmdcaller.h"
 #include "settingsdialog.h"
+#include <rapidxml/rapidxml.hpp>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,6 +19,21 @@ MainWindow::MainWindow(QWidget *parent)
     this->bspProcess = new QProcess(this);
     connect(bspProcess, SIGNAL(readyReadStandardOutput()),this, SLOT(readyReadStandardOutputBSP()));
     connect(bspProcess, SIGNAL(readyReadStandardError()),this, SLOT(readyReadStandardErrorBSP()));
+
+    QFile svdFile;
+    svdFile.setFileName("design.svd");
+    svdFile.open(QFile::ReadOnly);
+    QString fileContents = svdFile.readAll();
+    rapidxml::xml_document<> doc;
+    char* fileString = new char[fileContents.size() + 1];
+    strcpy(fileString, fileContents.toStdString().c_str());
+
+    doc.parse<0>(fileString);
+
+    std::cout << "First node name = " << doc.first_node()->first_node()->name() << " and value = " << doc.first_node()->first_node()->value() << std::endl;
+
+
+    delete [] fileString;
 }
 
 MainWindow::~MainWindow()
