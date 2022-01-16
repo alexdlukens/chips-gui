@@ -19,21 +19,22 @@ MainWindow::MainWindow(QWidget *parent)
     this->bspProcess = new QProcess(this);
     connect(bspProcess, SIGNAL(readyReadStandardOutput()),this, SLOT(readyReadStandardOutputBSP()));
     connect(bspProcess, SIGNAL(readyReadStandardError()),this, SLOT(readyReadStandardErrorBSP()));
+    connect(bspProcess, SIGNAL(stateChanged(QProcess::ProcessState)), this, SLOT(setChipyardButtonsEnabled(QProcess::ProcessState)));
 
-    QFile svdFile;
-    svdFile.setFileName("design.svd");
-    svdFile.open(QFile::ReadOnly);
-    QString fileContents = svdFile.readAll();
-    rapidxml::xml_document<> doc;
-    char* fileString = new char[fileContents.size() + 1];
-    strcpy(fileString, fileContents.toStdString().c_str());
+//    QFile svdFile;
+//    svdFile.setFileName("design.svd");
+//    svdFile.open(QFile::ReadOnly);
+//    QString fileContents = svdFile.readAll();
+//    rapidxml::xml_document<> doc;
+//    char* fileString = new char[fileContents.size() + 1];
+//    strcpy(fileString, fileContents.toStdString().c_str());
 
-    doc.parse<0>(fileString);
+//    doc.parse<0>(fileString);
 
-    std::cout << "First node name = " << doc.first_node()->first_node()->name() << " and value = " << doc.first_node()->first_node()->value() << std::endl;
+//    std::cout << "First node name = " << doc.first_node()->first_node()->name() << " and value = " << doc.first_node()->first_node()->value() << std::endl;
 
 
-    delete [] fileString;
+//    delete [] fileString;
 }
 
 MainWindow::~MainWindow()
@@ -105,6 +106,19 @@ void MainWindow::onBSPButtonPressed()
 
 //    //output command text to browser window
 //    ui->textBrowser->setText(tr(system->ReturnOutput().c_str()));
+}
+
+void MainWindow::setChipyardButtonsEnabled(QProcess::ProcessState newState)
+{
+    if(newState == QProcess::Starting)
+    {
+        ui->MakeBSP->setEnabled(false);
+        ui->MakeMCS->setEnabled(false);
+    }
+    else if(newState == QProcess::NotRunning){
+        ui->MakeBSP->setEnabled(true);
+        ui->MakeMCS->setEnabled(true);
+    }
 }
 
 void MainWindow::readyReadStandardOutputBSP()

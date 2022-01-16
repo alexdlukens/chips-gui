@@ -25,6 +25,8 @@ public slots:
     void onBSPButtonPressed();
     void readyReadStandardOutputBSP();
     void readyReadStandardErrorBSP();
+    void setChipyardButtonsEnabled(QProcess::ProcessState newState);
+
 
 private:
     Ui::MainWindow *ui;
