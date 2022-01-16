@@ -103,7 +103,7 @@ void MainWindow::onBSPButtonPressed()
     //in this case our only argument is to specify that we want to build "bsp"
     QStringList arguments;
     arguments.append("-c");
-    arguments.append("environmentInit.sh");
+    arguments.append("./environmentInit.sh");
 
 //    this->chipyardProcess->setWorkingDirectory(settingsMap.value("chip_fpga").toString());
     std::cout << "before starting chipyard BSP Process" << std::endl;
@@ -142,6 +142,7 @@ void MainWindow::readyReadStandardErrorBSP()
 void MainWindow::on_AbortOperation_clicked()
 {
     chipyardProcess->kill();
+    ui->textBrowser->append("CHIPYARD PROCESS ABORTED\n");
     std::cout << "chipyard Process Killed" << std::endl;
 }
 
