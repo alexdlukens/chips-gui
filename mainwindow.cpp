@@ -1,11 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <fstream>
-#include <stdio.h>
-#include <stdlib.h>
-#include "systemcmdcaller.h"
-#include "settingsdialog.h"
-#include <rapidxml/rapidxml.hpp>
+
+
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,6 +18,18 @@ MainWindow::MainWindow(QWidget *parent)
     connect(chipyardProcess, SIGNAL(readyReadStandardOutput()),this, SLOT(readyReadStandardOutputBSP()));
     connect(chipyardProcess, SIGNAL(readyReadStandardError()),this, SLOT(readyReadStandardErrorBSP()));
     connect(chipyardProcess, SIGNAL(stateChanged(QProcess::ProcessState)), this, SLOT(setChipyardButtonsEnabled(QProcess::ProcessState)));
+
+    this->console = new SerialConsole();
+    ui->FPGA_TTY_Port->clear();
+    ui->FPGA_TTY_Port->addItems(console->getTTYList());
+    ui->FPGA_TTY_Port->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+    QTimer *portRefresh = new QTimer(this);
+    portRefresh->setTimerType(Qt::VeryCoarseTimer);
+    portRefresh->setInterval(5000);
+//    portRefresh.callOnTimeout(this, SLOT(updateTTYPortList()));
+    connect(portRefresh, SIGNAL(timeout()), this, SLOT(updateTTYPortList()));
+    portRefresh->start();
 
 //    QFile svdFile;
 //    svdFile.setFileName("design.svd");
@@ -40,7 +49,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete chipyardProcess;
+    delete console;
     delete ui;
+
 }
 
 //when settings button pressed (tools->settings), open settings dialog
@@ -82,6 +94,7 @@ void MainWindow::onMCSButtonPressed()
     std::cout << "before starting chipyard MCS Process" << std::endl;
     this->chipyardProcess->start(command, arguments);
     std::cout << "started MCS" << std::endl;
+
 }
 
 //invoke make BSP command with specified arguments;
@@ -109,7 +122,6 @@ void MainWindow::onBSPButtonPressed()
     std::cout << "before starting chipyard BSP Process" << std::endl;
     this->chipyardProcess->start(command, arguments);
     std::cout << "started BSP" << std::endl;
-
 }
 
 void MainWindow::setChipyardButtonsEnabled(QProcess::ProcessState newState)
@@ -146,3 +158,7 @@ void MainWindow::on_AbortOperation_clicked()
     std::cout << "chipyard Process Killed" << std::endl;
 }
 
+void MainWindow::updateTTYPortList() {
+    ui->FPGA_TTY_Port->clear();
+    ui->FPGA_TTY_Port->addItems(console->getTTYList());
+}

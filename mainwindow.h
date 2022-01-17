@@ -6,6 +6,15 @@
 #include <QSettings>
 #include <cstdlib>
 #include <QProcess>
+#include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include "systemcmdcaller.h"
+#include "settingsdialog.h"
+#include <rapidxml/rapidxml.hpp>
+#include "serialconsole.h"
+#include <QAbstractItemView>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,9 +39,11 @@ public slots:
 
 private slots:
     void on_AbortOperation_clicked();
+    void updateTTYPortList();
 
 private:
     Ui::MainWindow *ui;
     QProcess *chipyardProcess;
+    SerialConsole *console;
 };
 #endif // MAINWINDOW_H

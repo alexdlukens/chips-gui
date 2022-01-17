@@ -11,11 +11,13 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    serialconsole.cpp \
     settingsdialog.cpp \
     systemcmdcaller.cpp
 
 HEADERS += \
     mainwindow.h \
+    serialconsole.h \
     settingsdialog.h \
     systemcmdcaller.h
 
