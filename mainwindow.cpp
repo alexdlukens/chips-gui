@@ -167,6 +167,12 @@ void MainWindow::on_AbortOperation_clicked()
 }
 
 void MainWindow::updateTTYPortList() {
+    //when updating list, save current value & restore it after refresh if possible
+    //if item no longer in list, current val = -1
+    QString currentVal = ui->FPGA_TTY_Port->currentText();
     ui->FPGA_TTY_Port->clear();
     ui->FPGA_TTY_Port->addItems(console->getTTYList());
+    int index = ui->FPGA_TTY_Port->findText(currentVal, Qt::MatchExactly);
+    ui->FPGA_TTY_Port->setCurrentIndex(index);
+
 }
