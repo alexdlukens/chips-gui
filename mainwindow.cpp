@@ -24,27 +24,35 @@ MainWindow::MainWindow(QWidget *parent)
     ui->FPGA_TTY_Port->addItems(console->getTTYList());
     ui->FPGA_TTY_Port->view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-    QTimer *portRefresh = new QTimer(this);
-    portRefresh->setTimerType(Qt::VeryCoarseTimer);
-    portRefresh->setInterval(5000);
-//    portRefresh.callOnTimeout(this, SLOT(updateTTYPortList()));
-    connect(portRefresh, SIGNAL(timeout()), this, SLOT(updateTTYPortList()));
-    portRefresh->start();
-
-//    QFile svdFile;
-//    svdFile.setFileName("design.svd");
-//    svdFile.open(QFile::ReadOnly);
-//    QString fileContents = svdFile.readAll();
-//    rapidxml::xml_document<> doc;
-//    char* fileString = new char[fileContents.size() + 1];
-//    strcpy(fileString, fileContents.toStdString().c_str());
-
-//    doc.parse<0>(fileString);
-
-//    std::cout << "First node name = " << doc.first_node()->first_node()->name() << " and value = " << doc.first_node()->first_node()->value() << std::endl;
+    //create timer for updating TTY ports every 5 seconds
+    {
+        QTimer *portRefresh = new QTimer(this);
+        portRefresh->setTimerType(Qt::VeryCoarseTimer);
+        portRefresh->setInterval(5000);
+    //    portRefresh.callOnTimeout(this, SLOT(updateTTYPortList()));
+        connect(portRefresh, SIGNAL(timeout()), this, SLOT(updateTTYPortList()));
+        portRefresh->start();
+    }
 
 
-//    delete [] fileString;
+    //ramblings about XML to display graphical device tree from design.svd file
+    {
+        //    QFile svdFile;
+        //    svdFile.setFileName("design.svd");
+        //    svdFile.open(QFile::ReadOnly);
+        //    QString fileContents = svdFile.readAll();
+        //    rapidxml::xml_document<> doc;
+        //    char* fileString = new char[fileContents.size() + 1];
+        //    strcpy(fileString, fileContents.toStdString().c_str());
+
+        //    doc.parse<0>(fileString);
+
+        //    std::cout << "First node name = " << doc.first_node()->first_node()->name() << " and value = " << doc.first_node()->first_node()->value() << std::endl;
+
+
+        //    delete [] fileString;
+    }
+
 }
 
 MainWindow::~MainWindow()
