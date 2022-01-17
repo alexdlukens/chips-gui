@@ -9,8 +9,11 @@ class SerialConsole
 public:
     SerialConsole();
     int baudRate;
-    std::string serialPort;
+    QString serialPort;
+
     QStringList getTTYList();
+    void setSerialPort(QString port);
+    void setBaudRate(int rate);
 };
 
 #endif // SERIALCONSOLE_H
