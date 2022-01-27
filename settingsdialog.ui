@@ -53,7 +53,7 @@
      <height>361</height>
     </size>
    </property>
-   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0" columnstretch="0,0,0,0">
+   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0" columnstretch="0,0,0,0">
     <property name="leftMargin">
      <number>1</number>
     </property>
@@ -66,16 +66,10 @@
     <property name="verticalSpacing">
      <number>0</number>
     </property>
-    <item row="4" column="2">
-     <widget class="QLineEdit" name="chipyardFpgaPath">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="toolTip">
-       <string>Set this path to the folder where the Chipyard/fpga directory lives on your computer</string>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
+    <item row="0" column="3">
+     <widget class="QPushButton" name="freedomSdkButton">
+      <property name="text">
+       <string>...</string>
       </property>
      </widget>
     </item>
@@ -95,41 +89,8 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="chipyardFpgaLabel">
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: lightgray;</string>
-      </property>
-      <property name="text">
-       <string>Path to .../Chipyard/FPGA/</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="3">
-     <widget class="QPushButton" name="chipyardFpgaButton">
-      <property name="text">
-       <string>...</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLabel" name="FreedomSdkLabel">
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: lightgray;</string>
-      </property>
-      <property name="text">
-       <string>Path to .../freedom-e-sdk</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="3">
-     <widget class="QPushButton" name="freedomSdkButton">
+    <item row="2" column="3">
+     <widget class="QPushButton" name="riscvButton">
       <property name="text">
        <string>...</string>
       </property>
@@ -148,10 +109,16 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="3">
-     <widget class="QPushButton" name="riscvButton">
-      <property name="text">
-       <string>...</string>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="chipyardFpgaPath">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="toolTip">
+       <string>Set this path to the folder where the Chipyard/fpga directory lives on your computer</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -168,6 +135,72 @@
       </property>
       <property name="readOnly">
        <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3">
+     <widget class="QPushButton" name="chipyardFpgaButton">
+      <property name="text">
+       <string>...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="chipyardFpgaLabel">
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: lightgray;</string>
+      </property>
+      <property name="text">
+       <string>Path to .../Chipyard</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="FreedomSdkLabel">
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: lightgray;</string>
+      </property>
+      <property name="text">
+       <string>Path to .../freedom-e-sdk</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLabel" name="vivadoPathLabel">
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: lightgray;</string>
+      </property>
+      <property name="text">
+       <string>Path to Vivado settings64.sh</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLineEdit" name="VivadoPath">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="toolTip">
+       <string>Set this path to the folder where the Chipyard/fpga directory lives on your computer</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="3">
+     <widget class="QPushButton" name="VivadoPathButton">
+      <property name="text">
+       <string>...</string>
       </property>
      </widget>
     </item>

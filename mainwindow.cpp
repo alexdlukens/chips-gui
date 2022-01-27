@@ -34,27 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
         portRefresh->start();
     }
 
-
-    //ramblings about XML to display graphical device tree from design.svd file
-    {
-        //    QFile svdFile;
-        //    svdFile.setFileName("design.svd");
-        //    svdFile.open(QFile::ReadOnly);
-        //    QString fileContents = svdFile.readAll();
-        //    rapidxml::xml_document<> doc;
-        //    char* fileString = new char[fileContents.size() + 1];
-        //    strcpy(fileString, fileContents.toStdString().c_str());
-
-        //    doc.parse<0>(fileString);
-
-        //    std::cout << "First node name = " << doc.first_node()->first_node()->name() << " and value = " << doc.first_node()->first_node()->value() << std::endl;
-
-
-        //    delete [] fileString;
-    }
-
 }
-
 MainWindow::~MainWindow()
 {
     delete chipyardProcess;
@@ -80,42 +60,14 @@ void MainWindow::onSettingsButtonPressed()
 //invoke make MCS command with specified arguments
 void MainWindow::onMCSButtonPressed()
 {
-    std::string dir = settingsMap.value("chip_fpga").toString().toStdString();
+    std::string dir = settingsMap.value("chipyard_path").toString().toStdString();
 
     //exit if no directory set
     if(dir.empty()) {
         std::cout << "chipyard/fpga dir not set in settings" << std::endl;
         return;
     }
-    QStringList env = {"RISCV=" + settingsMap.value("RISCV").toString(), "QT_FPGA_PATH=" + settingsMap.value("chip_fpga").toString(), "QT_CMD=mcs", "QT_OP=" + ui->commandDir->text(), "HOME=" + QProcessEnvironment::systemEnvironment().value("HOME")};
-    chipyardProcess->setEnvironment(env);
-
-
-    QString command = QString::fromStdString("/bin/bash");
-
-    //in this case our only argument is to specify that we want to build "bsp"
-    QStringList arguments;
-    arguments.append("-c");
-    arguments.append("environmentInit.sh");
-
-    this->chipyardProcess->setWorkingDirectory(settingsMap.value("chip_fpga").toString());
-    std::cout << "before starting chipyard MCS Process" << std::endl;
-    this->chipyardProcess->start(command, arguments);
-    std::cout << "started MCS" << std::endl;
-
-}
-
-//invoke make BSP command with specified arguments;
-void MainWindow::onBSPButtonPressed()
-{
-    std::string dir = settingsMap.value("chip_fpga").toString().toStdString();
-
-    //exit if no directory set
-    if(dir.empty()) {
-        std::cout << "chipyard/fpga dir not set in settings" << std::endl;
-        return;
-    }
-    QStringList env = {"RISCV=" + settingsMap.value("RISCV").toString(), "QT_FPGA_PATH=" + settingsMap.value("chip_fpga").toString(), "QT_CMD=bsp", "QT_OP=" + ui->commandDir->text(), "HOME=" + QProcessEnvironment::systemEnvironment().value("HOME")};
+    QStringList env = {"RISCV=" + settingsMap.value("RISCV").toString(), "QT_FPGA_PATH=" + settingsMap.value("chipyard_path").toString(), "QT_CMD=mcs", "QT_OP=" + ui->commandDir->text(), "HOME=" + QProcessEnvironment::systemEnvironment().value("HOME")};
     chipyardProcess->setEnvironment(env);
 
 
@@ -126,7 +78,37 @@ void MainWindow::onBSPButtonPressed()
     arguments.append("-c");
     arguments.append("./environmentInit.sh");
 
-//    this->chipyardProcess->setWorkingDirectory(settingsMap.value("chip_fpga").toString());
+    this->chipyardProcess->setWorkingDirectory(settingsMap.value("chipyard_path").toString());
+    std::cout << "before starting chipyard MCS Process" << std::endl;
+    this->chipyardProcess->start(command, arguments);
+    std::cout << "started MCS" << std::endl;
+
+}
+
+//invoke make BSP command with specified arguments;
+void MainWindow::onBSPButtonPressed()
+{
+    std::string dir = settingsMap.value("chipyard_path").toString().toStdString();
+
+    //exit if no directory set
+    if(dir.empty()) {
+        std::cout << "chipyard/fpga dir not set in settings" << std::endl;
+        return;
+    }
+
+    //TODO -- Change QT_FPGA_PATH to derive based off of chipyard base dir
+    QStringList env = {"RISCV=" + settingsMap.value("RISCV").toString(), "QT_FPGA_PATH=" + settingsMap.value("chipyard_path").toString(), "QT_CMD=bsp", "QT_OP=" + ui->commandDir->text(), "HOME=" + QProcessEnvironment::systemEnvironment().value("HOME")};
+    chipyardProcess->setEnvironment(env);
+
+
+    QString command = QString::fromStdString("/bin/bash");
+
+    //in this case our only argument is to specify that we want to build "bsp"
+    QStringList arguments;
+    arguments.append("-c");
+    arguments.append("./environmentInit.sh");
+
+//    this->chipyardProcess->setWorkingDirectory(settingsMap.value("chipyard_path").toString());
     std::cout << "before starting chipyard BSP Process" << std::endl;
     this->chipyardProcess->start(command, arguments);
     std::cout << "started BSP" << std::endl;

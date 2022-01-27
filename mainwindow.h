@@ -11,10 +11,10 @@
 #include <stdlib.h>
 #include "systemcmdcaller.h"
 #include "settingsdialog.h"
-#include <rapidxml/rapidxml.hpp>
 #include "serialconsole.h"
 #include <QAbstractItemView>
 #include <QTimer>
+#include <yaml-cpp/yaml.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

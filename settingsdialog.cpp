@@ -14,8 +14,8 @@ SettingsDialog::SettingsDialog(QSettings &settingsMap, QWidget *parent) :
     if(this->mainSettings->contains("freedom_sdk_path")){
         ui->freedomSdkPath->setText(this->mainSettings->value("freedom_sdk_path").toString());
     }
-    if(this->mainSettings->contains("chip_fpga")){
-        ui->chipyardFpgaPath->setText(this->mainSettings->value("chip_fpga").toString());
+    if(this->mainSettings->contains("chipyard_path")){
+        ui->chipyardFpgaPath->setText(this->mainSettings->value("chipyard_path").toString());
     }
     if(this->mainSettings->contains("RISCV")){
         ui->riscvPath->setText(this->mainSettings->value("RISCV").toString());
@@ -33,7 +33,7 @@ void SettingsDialog::onChipFpgaButtonClicked()
     QString dirPath = QFileDialog::getExistingDirectory(this, "Chipyard/FPGA Dir", "");
     if(!dirPath.isEmpty()){
         ui->chipyardFpgaPath->setText(dirPath);
-        this->editedSettings["chip_fpga"] = dirPath;
+        this->editedSettings["chipyard_path"] = dirPath;
     }
 
 }
